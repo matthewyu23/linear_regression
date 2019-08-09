@@ -60,8 +60,7 @@ def runLinearReg(jList, kList, jLearningRate, kLearningRate, iterations, initial
     print("\n\n\n\n\n\n\n\n\niterations = " + printIter + ", B = " + printB + ", M = " + printM + ", error = " + printError)
     return b, m
 
-
-
+numberOfPlots = 1
 print("Ticker: ")
 data = requests.get(f"https://api.worldtradingdata.com/api/v1/history?symbol={input()}&sort=newest&api_token=Nn3T3dHhdxvMDtttmaFMpmsChWFyvcaFKViUiqjwFGixpv2Z24lUFSe6uscx")
 parsed = data.json()["history"]
@@ -79,18 +78,19 @@ k = k[::-1]
 
 jLearningRate = 0.1
 kLearningRate = 0.00000001
-iterations = 2000
+iterations = 1000
 initialB = 0
 initialM = 0
 graphDomainMin = 0
 graphDomainMax= len(parsed)
 
+
 b, m = runLinearReg(j, k, jLearningRate, kLearningRate, iterations, initialB, initialM)
+plt.subplot(numberOfPlots, 1, 1)
 plt.plot(j, k, "o", markersize = 2)
 for i in range(graphDomainMin, graphDomainMax): 
     x_result.append(i)
     y_result.append(i*m + b)
+
 plt.plot(x_result, y_result)
 plt.show()
-
-print(counter)

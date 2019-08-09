@@ -1,6 +1,14 @@
 import os
-import pandas as pd
-import matplotlib.pyplot as plt
+try: 
+    import pandas as pd
+except (Exception): 
+    os.system("pip3 install pandas")
+    import pandas as pd
+try: 
+    import matplotlib.pyplot as plt
+except (Exception): 
+    os.system("pip3 install matplotlib ")
+    import matplotlib.pyplot as plt
 import json
 import requests
 x_result = []

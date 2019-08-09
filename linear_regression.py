@@ -11,8 +11,7 @@ except (Exception):
     import matplotlib.pyplot as plt
 import json
 import requests
-x_result = []
-y_result = []
+
 
 
     
@@ -59,6 +58,11 @@ def runLinearReg(jList, kList, jLearningRate, kLearningRate, iterations, initial
     printError = str(runErrorAnalysis(b, m, jList, kList))
     print("\n\n\n\n\n\n\n\n\niterations = " + printIter + ", B = " + printB + ", M = " + printM + ", error = " + printError)
     return b, m
+
+
+x_result = []
+y_result = []
+
 
 numberOfPlots = 1
 print("Ticker: ")

@@ -2,7 +2,7 @@ import os
 try: 
     import pandas as pd
 except (Exception): 
-    os.system("pip3 install pandas")
+    os.system("pip3 install pandas --user")
     import pandas as pd
 try: 
     import matplotlib.pyplot as plt

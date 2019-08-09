@@ -7,7 +7,7 @@ except (Exception):
 try: 
     import matplotlib.pyplot as plt
 except (Exception): 
-    os.system("pip3 install matplotlib ")
+    os.system("pip3 install matplotlib --user")
     import matplotlib.pyplot as plt
 import json
 import requests

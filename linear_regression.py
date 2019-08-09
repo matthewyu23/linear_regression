@@ -1,17 +1,12 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import json
+import requests
 x_result = []
 y_result = []
 
-def importData(x, y, z): 
-    dir = os.path.dirname(__file__)
-    path = str(dir + "/" + x)
-    data = pd.read_csv(path)
-    jList = list(data[y])
-    kList = list(data[z])
-    return jList, kList
+
     
 def runErrorAnalysis(bValue, mValue, j, k): 
     totalError = 0
@@ -58,18 +53,30 @@ def runLinearReg(jList, kList, jLearningRate, kLearningRate, iterations, initial
     return b, m
 
 
-fileName = "goog.csv"
-xColumnName = "time"
-yColumnName = "value"
-jLearningRate = 0.01
-kLearningRate = 0.000001
-iterations = 10000
+
+print("Ticker: ")
+data = requests.get(f"https://api.worldtradingdata.com/api/v1/history?symbol={input()}&sort=newest&api_token=Nn3T3dHhdxvMDtttmaFMpmsChWFyvcaFKViUiqjwFGixpv2Z24lUFSe6uscx")
+parsed = data.json()["history"]
+j = []
+k = []
+
+counter = 0
+for x in parsed: 
+    j.append(counter)
+    counter = counter + 1
+    k.append(float(parsed[x]["open"]))
+    
+k = k[::-1]
+
+
+jLearningRate = 0.1
+kLearningRate = 0.00000001
+iterations = 2000
 initialB = 0
 initialM = 0
 graphDomainMin = 0
-graphDomainMax= 1000
+graphDomainMax= len(parsed)
 
-j, k = importData(fileName, xColumnName, yColumnName)
 b, m = runLinearReg(j, k, jLearningRate, kLearningRate, iterations, initialB, initialM)
 plt.plot(j, k, "o", markersize = 2)
 for i in range(graphDomainMin, graphDomainMax): 
@@ -78,3 +85,4 @@ for i in range(graphDomainMin, graphDomainMax):
 plt.plot(x_result, y_result)
 plt.show()
 
+print(counter)

@@ -56,45 +56,52 @@ def runLinearReg(jList, kList, jLearningRate, kLearningRate, iterations, initial
     printB = str(format(b, ".10f"))
     printM = str(format(m, ".10f"))
     printError = str(runErrorAnalysis(b, m, jList, kList))
-    print("\n\n\n\n\n\n\n\n\niterations = " + printIter + ", B = " + printB + ", M = " + printM + ", error = " + printError)
+    print("\n\niterations = " + printIter + ", B = " + printB + ", M = " + printM + ", error = " + printError + "\n\n")
     return b, m
 
 
-x_result = []
-y_result = []
 
 
 numberOfPlots = 1
 print("Ticker: ")
-data = requests.get(f"https://api.worldtradingdata.com/api/v1/history?symbol={input()}&sort=newest&api_token=Nn3T3dHhdxvMDtttmaFMpmsChWFyvcaFKViUiqjwFGixpv2Z24lUFSe6uscx")
-parsed = data.json()["history"]
-j = []
-k = []
+userInput = input().split(" ")
 
-counter = 0
-for x in parsed: 
-    j.append(counter)
-    counter = counter + 1
-    k.append(float(parsed[x]["open"]))
+index = 1
+for x in userInput: 
+    x_result = []
+    y_result = []
+
     
-k = k[::-1]
+    data = requests.get(f"https://api.worldtradingdata.com/api/v1/history?symbol={x}&sort=newest&api_token=Nn3T3dHhdxvMDtttmaFMpmsChWFyvcaFKViUiqjwFGixpv2Z24lUFSe6uscx")
+    parsed = data.json()["history"]
+    j = []
+    k = []
+
+    counter = 0
+    for x in parsed: 
+        j.append(counter)
+        counter = counter + 1
+        k.append(float(parsed[x]["open"]))
+        
+    k = k[::-1]
 
 
-jLearningRate = 0.1
-kLearningRate = 0.00000001
-iterations = 1000
-initialB = 0
-initialM = 0
-graphDomainMin = 0
-graphDomainMax= len(parsed)
+    jLearningRate = 0.1
+    kLearningRate = 0.00000001
+    iterations = 1000
+    initialB = 0
+    initialM = 0
+    graphDomainMin = 0
+    graphDomainMax= len(parsed)
 
 
-b, m = runLinearReg(j, k, jLearningRate, kLearningRate, iterations, initialB, initialM)
-plt.subplot(numberOfPlots, 1, 1)
-plt.plot(j, k, "o", markersize = 2)
-for i in range(graphDomainMin, graphDomainMax): 
-    x_result.append(i)
-    y_result.append(i*m + b)
+    b, m = runLinearReg(j, k, jLearningRate, kLearningRate, iterations, initialB, initialM)
+    plt.subplot(len(userInput), 1, index)
+    plt.plot(j, k, "o", markersize = 2)
+    for i in range(graphDomainMin, graphDomainMax): 
+        x_result.append(i)
+        y_result.append(i*m + b)
 
-plt.plot(x_result, y_result)
+    plt.plot(x_result, y_result)
+    index += 1
 plt.show()
